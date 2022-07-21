@@ -4,25 +4,24 @@ const path = require("path");
 const express = require("express");
 const app = express();
 
-const dbNotes = require("./db/db.json");
+const dbNotes = require("./db/db");
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.get("/notes", (request, response) => {
     response.sendFile(`${__dirname}/public/notes.html`)
-    console.log(`Request to view notes.html received successfully!`)
 })
 
-app.get("*", (request, response) => {
+app.get("/", (request, response) => {
     response.sendFile(`${__dirname}/public/index.html`)
-    console.log(`Request to view index.html received successfully! `)
 })
 
 app.get("/api/notes", (request, response) => {
     console.log(dbNotes)
+    response.json(dbNotes)
 })
 
 app.post("/api/notes", (request, response) => {
